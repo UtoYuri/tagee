@@ -1,0 +1,9 @@
+.github/
+.idea/
+vendor/
+assets/
+
+**/*.out
+
+**/.DS_Store
+database.sqlite

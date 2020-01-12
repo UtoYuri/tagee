@@ -1,0 +1,44 @@
+{
+  "name": "nextjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "export": "next build && next export",
+    "prettier:base": "prettier --parser typescript",
+    "prettier:check": "yarn prettier:base --list-different \"{components,containers,pages,redux,routes}/**/*.{ts,tsx}\"",
+    "format": "yarn prettier:base --write \"{components,containers,pages,redux,routes}/**/*.{ts,tsx}\"",
+    "lint": "tslint \"{components,containers,pages,redux,routes}/**/*.{ts,tsx}\""
+  },
+  "devDependencies": {
+    "@types/next": "^8.0.5",
+    "@types/next-redux-wrapper": "^2.0.2",
+    "@types/react": "^16.8.17",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-redux": "^7.0.8",
+    "@types/redux-logger": "^3.0.7",
+    "@types/styled-jsx": "^2.2.8",
+    "babel-plugin-import": "^1.11.0",
+    "next": "^8.1.0",
+    "prettier": "^1.18.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "@zeit/next-less": "^1.0.1",
+    "@zeit/next-typescript": "^1.1.1",
+    "antd": "^3.17.0",
+    "less": "^3.9.0",
+    "next-images": "^1.1.2",
+    "next-redux-wrapper": "^3.0.0-alpha.2",
+    "react-redux": "^7.0.3",
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
+  }
+}

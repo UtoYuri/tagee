@@ -1,0 +1,215 @@
+definitions:
+  handlers.CreateParams:
+    properties:
+      kind:
+        type: integer
+      size:
+        type: integer
+      suffix:
+        type: string
+      title:
+        type: string
+      url:
+        type: string
+    required:
+    - title
+    - url
+    type: object
+  handlers.FailedResponse:
+    properties:
+      err_code:
+        type: integer
+      err_msg:
+        type: string
+    type: object
+  handlers.PatchParams:
+    properties:
+      title:
+        type: string
+      url:
+        type: string
+    type: object
+  handlers.UpdateParams:
+    properties:
+      title:
+        type: string
+      url:
+        type: string
+    required:
+    - title
+    - url
+    type: object
+  models.MediaReadonly:
+    properties:
+      createdAt:
+        type: integer
+      id:
+        type: integer
+      kind:
+        type: integer
+      size:
+        type: integer
+      status:
+        type: integer
+      suffix:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: integer
+      url:
+        type: string
+    type: object
+info:
+  contact:
+    email: yuri@utohub.com
+    name: yuri
+    url: https://utohub.com
+  description: Learning Go
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Gin swagger
+  version: "1.0"
+paths:
+  /media:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "200":
+          description: Media infos
+          schema:
+            items:
+              $ref: '#/definitions/models.MediaReadonly'
+            type: array
+        "400":
+          description: Wrong params
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+        "500":
+          description: Other
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+      summary: Get bulk media
+      tags:
+      - Media
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Media info
+        in: body
+        name: media
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateParams'
+      responses:
+        "200":
+          description: Media info
+          schema:
+            $ref: '#/definitions/models.MediaReadonly'
+        "400":
+          description: Wrong params
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+        "500":
+          description: Other
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+      summary: Create media
+      tags:
+      - Media
+  /media/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Media ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Media info
+          schema:
+            $ref: '#/definitions/models.MediaReadonly'
+        "400":
+          description: Wrong params
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+        "404":
+          description: Record not found
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+        "500":
+          description: Other
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+      summary: Get media by id
+      tags:
+      - Media
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Media ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Media info
+        in: body
+        name: media
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.PatchParams'
+      responses:
+        "200":
+          description: Media info
+          schema:
+            $ref: '#/definitions/models.MediaReadonly'
+        "400":
+          description: Wrong params
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+        "500":
+          description: Other
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+      summary: Patch media
+      tags:
+      - Media
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Media ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Media info
+        in: body
+        name: media
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UpdateParams'
+      responses:
+        "200":
+          description: Media info
+          schema:
+            $ref: '#/definitions/models.MediaReadonly'
+        "400":
+          description: Wrong params
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+        "500":
+          description: Other
+          schema:
+            $ref: '#/definitions/handlers.FailedResponse'
+      summary: Update media
+      tags:
+      - Media
+swagger: "2.0"
