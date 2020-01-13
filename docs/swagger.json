@@ -234,12 +234,28 @@
         "handlers.CreateParams": {
             "type": "object",
             "required": [
+                "md5",
                 "title",
                 "url"
             ],
             "properties": {
+                "customRelativePathname": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
                 "kind": {
                     "type": "integer"
+                },
+                "lastModifiedAt": {
+                    "type": "integer"
+                },
+                "md5": {
+                    "type": "string"
+                },
+                "originRelativePathname": {
+                    "type": "string"
                 },
                 "size": {
                     "type": "integer"
@@ -269,6 +285,30 @@
         "handlers.PatchParams": {
             "type": "object",
             "properties": {
+                "customRelativePathname": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "integer"
+                },
+                "lastModifiedAt": {
+                    "type": "integer"
+                },
+                "md5": {
+                    "type": "string"
+                },
+                "originRelativePathname": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "suffix": {
+                    "type": "string"
+                },
                 "title": {
                     "type": "string"
                 },
@@ -279,11 +319,31 @@
         },
         "handlers.UpdateParams": {
             "type": "object",
-            "required": [
-                "title",
-                "url"
-            ],
             "properties": {
+                "customRelativePathname": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "integer"
+                },
+                "lastModifiedAt": {
+                    "type": "integer"
+                },
+                "md5": {
+                    "type": "string"
+                },
+                "originRelativePathname": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "suffix": {
+                    "type": "string"
+                },
                 "title": {
                     "type": "string"
                 },
@@ -298,11 +358,26 @@
                 "createdAt": {
                     "type": "integer"
                 },
+                "customRelativePathname": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
                 "kind": {
                     "type": "integer"
+                },
+                "lastModifiedAt": {
+                    "type": "integer"
+                },
+                "md5": {
+                    "type": "string"
+                },
+                "originRelativePathname": {
+                    "type": "string"
                 },
                 "size": {
                     "type": "integer"

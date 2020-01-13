@@ -1,8 +1,18 @@
 definitions:
   handlers.CreateParams:
     properties:
+      customRelativePathname:
+        type: string
+      description:
+        type: string
       kind:
         type: integer
+      lastModifiedAt:
+        type: integer
+      md5:
+        type: string
+      originRelativePathname:
+        type: string
       size:
         type: integer
       suffix:
@@ -12,6 +22,7 @@ definitions:
       url:
         type: string
     required:
+    - md5
     - title
     - url
     type: object
@@ -24,6 +35,22 @@ definitions:
     type: object
   handlers.PatchParams:
     properties:
+      customRelativePathname:
+        type: string
+      description:
+        type: string
+      kind:
+        type: integer
+      lastModifiedAt:
+        type: integer
+      md5:
+        type: string
+      originRelativePathname:
+        type: string
+      size:
+        type: integer
+      suffix:
+        type: string
       title:
         type: string
       url:
@@ -31,22 +58,45 @@ definitions:
     type: object
   handlers.UpdateParams:
     properties:
+      customRelativePathname:
+        type: string
+      description:
+        type: string
+      kind:
+        type: integer
+      lastModifiedAt:
+        type: integer
+      md5:
+        type: string
+      originRelativePathname:
+        type: string
+      size:
+        type: integer
+      suffix:
+        type: string
       title:
         type: string
       url:
         type: string
-    required:
-    - title
-    - url
     type: object
   models.MediaReadonly:
     properties:
       createdAt:
         type: integer
+      customRelativePathname:
+        type: string
+      description:
+        type: string
       id:
         type: integer
       kind:
         type: integer
+      lastModifiedAt:
+        type: integer
+      md5:
+        type: string
+      originRelativePathname:
+        type: string
       size:
         type: integer
       status:

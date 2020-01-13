@@ -1,5 +1,5 @@
 # Tagee
-A excellent web project for tagging, browsing, locating your files.
+A excellent web project for tagging, browsing, locating your media files.
 
 ## Usage
 ### Run backend service
