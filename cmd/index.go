@@ -7,7 +7,6 @@ import (
 	"tagee/internal/models"
 	"tagee/pkg/config"
 	"tagee/pkg/file_util"
-	"tagee/web/utils"
 )
 
 type Files map[string]os.FileInfo
@@ -29,6 +28,42 @@ func traversalFolder(folder string) (Files, error) {
 	return files, err
 }
 
+func createMedia(fileInfo os.FileInfo, pathname string) error {
+	kind, suffix := file_util.ParseFileFormat(fileInfo.Name())
+	file, err := os.Open(pathname)
+	if err != nil {
+		return fmt.Errorf("Create media<%s> failed while opening file, error is %v\n", pathname, err)
+	}
+
+	defer file.Close()
+
+	md5, err := file_util.FileSum(file)
+	if err != nil {
+		return fmt.Errorf("Create media<%s> failed while calcuating sum, error is %v\n", pathname, err)
+	}
+
+	absPathname, err := file_util.GetAbsPathname(file)
+
+	media := &models.Media{
+		Title:                  fileInfo.Name(),
+		Kind:                   kind,
+		Suffix:                 suffix,
+		Size:                   uint64(fileInfo.Size()),
+		Url:                    absPathname, // TODO: change to the path which relative to LOCAL_RESOURCE_DIR
+		LastModifiedAt:         fileInfo.ModTime(),
+		OriginRelativePathname: absPathname,
+		CustomRelativePathname: absPathname,
+		MD5:                    md5,
+	}
+
+	err = models.CreateMedia(media)
+	if err != nil {
+		return fmt.Errorf("Create media<%s> failed while insert db, error is %v\n", pathname, err)
+	}
+
+	return nil
+}
+
 func main() {
 	if err := config.Init(); err != nil {
 		fmt.Println("Init failed,", err)
@@ -48,29 +83,12 @@ func main() {
 	}
 
 	for pathname := range files {
-		kind, suffix := utils.ParseFileFormat(files[pathname].Name())
-		md5, err := file_util.FileSum(pathname)
+		err := createMedia(files[pathname], pathname)
+
 		if err != nil {
-			fmt.Printf("Create media<%s> failed while calcuating sum, error is %v\n", pathname, err)
+			fmt.Println(err.Error())
+		} else {
+			fmt.Printf("Index media success, <%s>\n", pathname)
 		}
-
-		media := &models.Media{
-			Title:                  files[pathname].Name(),
-			Kind:                   kind,
-			Suffix:                 suffix,
-			Size:                   uint64(files[pathname].Size()),
-			Url:                    fmt.Sprintf("/%s", pathname),
-			LastModifiedAt:         files[pathname].ModTime(),
-			OriginRelativePathname: fmt.Sprintf("/%s", pathname),
-			CustomRelativePathname: fmt.Sprintf("/%s", pathname),
-			MD5:                    md5,
-		}
-
-		err = models.CreateMedia(media)
-		if err != nil {
-			fmt.Printf("Create media<%s> failed while insert db, error is %v\n", pathname, err)
-		}
-
-		fmt.Printf("Index media success, <%s>\n", pathname)
 	}
 }

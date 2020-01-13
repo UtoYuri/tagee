@@ -1,6 +1,8 @@
-package utils
+package file_util
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -9,14 +11,14 @@ const (
 	FileImage = 1
 	FileVoice = 2
 	FileVideo = 3
-	FileText = 4
+	FileText  = 4
 )
 
 var kindMap = func() map[string]int {
 	originKind := map[int][]string{
 		FileImage: {"jpg", "jpeg", "png", "ico", "svg"},
 		FileVoice: {"mp3"},
-		FileVideo: {"mp4", "rmvb", "avi"},
+		FileVideo: {"mp4", "rmvb", "avi", "flv"},
 		FileText:  {"txt", "conf", "log"},
 	}
 
@@ -39,7 +41,7 @@ func ParseFileSuffix(fileName string) string {
 	if length == 2 {
 		return s[1]
 	}
-	return s[length - 1]
+	return s[length-1]
 }
 
 func ParseFileKind(suffix string) int {
@@ -53,4 +55,15 @@ func ParseFileFormat(fileName string) (int, string) {
 	suffix := ParseFileSuffix(fileName)
 	kind := ParseFileKind(suffix)
 	return kind, suffix
+}
+
+func GetAbsPathname(file *os.File) (string, error) {
+	var absPathname string
+
+	absPathname, err := filepath.Abs(filepath.Dir(file.Name()))
+	if err != nil {
+		return absPathname, err
+	}
+
+	return absPathname, nil
 }

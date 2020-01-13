@@ -7,13 +7,8 @@ import (
 	"os"
 )
 
-func FileSum(pathname string) (string, error) {
+func FileSum(file *os.File) (string, error) {
 	var returnMD5String string
-	file, err := os.Open(pathname)
-	if err != nil {
-		return returnMD5String, err
-	}
-	defer file.Close()
 	hash := md5.New()
 	if _, err := io.Copy(hash, file); err != nil {
 		return returnMD5String, err
