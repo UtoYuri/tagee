@@ -4,6 +4,6 @@
     "@zeit/next-typescript/babel"
   ],
   "plugins": [
-    ["import", { "libraryName": "antd", "style": false }]
+    ["import", { "libraryName": "antd", "style": true }]
   ]
 }

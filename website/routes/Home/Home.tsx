@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReduxDemo from '../../containers/ReduxDemo/ReduxDemo';
+import { Button } from 'antd';
 
 import styles from './Home.less';
 
@@ -7,8 +7,7 @@ class Home extends React.Component<{}, {}> {
   render() {
     return (
       <div className={styles.container}>
-        Home
-        <ReduxDemo />
+        <Button type='primary'>Home</Button>
       </div>
     );
   }
