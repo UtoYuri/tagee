@@ -1,4 +1,36 @@
-.container {
-  background-color: lightblue;
-  padding: 20px;
+.header {
+  & > .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    padding: 8px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+
+    & > .left {
+      & > .logo {
+        font-size: 18px;
+        font-weight: bolder;
+        color: #fff;
+
+        & > img {
+          height: 48px;
+        }
+      }
+    }
+  }
+
+  & > .outline {
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.38);
+    transition: 0.3s all;
+  }
+
+  & > .banner {
+    display: none;
+  }
 }

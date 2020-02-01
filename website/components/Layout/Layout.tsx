@@ -19,6 +19,7 @@ class Layout extends React.Component<Props, {}> {
           body {
             margin: 0;
             padding: 0;
+            font-family: -apple-system,BlinkMacSystemFont,segoe ui,roboto,oxygen,cantarell,helvetica neue,ubuntu,sans-serif;
           }
         `}</style>
         <Head>
