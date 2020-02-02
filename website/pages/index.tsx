@@ -1,12 +1,22 @@
 import * as React from 'react';
 import { NextPage } from 'next';
+
 import Layout from '../components/Layout/Layout';
 import Home from '../routes/Home/Home';
+import { GlobalStateProvider } from '../stores/globalStateStore';
 
-const Index: NextPage<{}> = () => (
-  <Layout>
-    <Home />
-  </Layout>
+import { fetchMedias } from '../api/medias';
+
+interface Props {
+  initialMedias: Media[];
+}
+
+const Index: NextPage<Props> = ({initialMedias}: Props) => (
+  <GlobalStateProvider>
+    <Layout>
+      <Home initialMedias={initialMedias} />
+    </Layout>
+  </GlobalStateProvider>
 );
 
 Index.getInitialProps = async ({ req }) => {
@@ -15,10 +25,8 @@ Index.getInitialProps = async ({ req }) => {
   }
   // client side
 
-  // const res = await fetch('https://api.github.com/repos/zeit/next.js')
-  // const json = await res.json()
-  // return { stars: json.stargazers_count }
-  return {};
+  const data = await fetchMedias();
+  return { initialMedias: data }
 };
 
 export default Index;

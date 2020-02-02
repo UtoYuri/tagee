@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 interface SettingAction {
-  key: string,
-  value: any,
+  key: string;
+  value: any;
 }
 
 interface Settings {
-  [name: string]: any,
+  [name: string]: any;
 }
 
 type Store = {

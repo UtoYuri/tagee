@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { GlobalSettingContext } from '../stores/globalSettingStore';
 
-const useGlobalSetting = (key: string, defaultValue: any): [any, (value: any) => void] => {
+const useGlobalSetting = <T>(key: string, defaultValue: T): [any, (value: T) => void] => {
   const {settings, dispatch} = React.useContext(GlobalSettingContext);
 
-  const set = (value: any) => {
+  const set = (value: T) => {
     dispatch({ key, value});
   };
 

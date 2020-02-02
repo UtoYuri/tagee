@@ -16,7 +16,7 @@ interface Props {
 const VideoView = function(props: Props) {
   const { media } = props;
   const windowSize = useWindowSize();
-  const [columns] = useGlobalSetting('view-columns', 5);
+  const [columns] = useGlobalSetting<number>('view-columns', 5);
   const [isHovered, hoverRef] = useHover(false);
   const [viewWidth, setViewWidth] = React.useState<number | null>(null);
   const [viewHeight, setViewHeight] = React.useState<number | null>(null);

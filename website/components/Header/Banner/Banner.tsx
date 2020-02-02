@@ -4,13 +4,32 @@ import classnames from 'classnames';
 
 import styles from './Banner.less';
 import useGlobalSetting from '../../../hooks/useGlobalSetting';
+import useGlobalState from '../../../hooks/useGlobalState';
+import useAsync from '../../../hooks/useAsync';
+import { fetchMedias } from '../../../api/medias';
 
 const Banner = () => {
-  const [columns, setColumns] = useGlobalSetting('view-columns', 5);
+  const [columns, setColumns] = useGlobalSetting<number>('view-columns', 5);
+  const { setPayload: setMediasPayload } = useGlobalState<Media[]>('medias');
+  const { execute: fetchMediasAction, result: medias, pending: fetchingMedias, error: fetchMediasError } = useAsync<Media[]>(fetchMedias, false);
 
   const columnSilder = (
     <Slider defaultValue={columns} dots min={3} max={10} style={{ width: 240 }} onChange={(value: any) => setColumns(value)} />
   );
+
+  React.useEffect(() => {
+    if (medias || fetchMediasError) {
+      // has result
+      setMediasPayload({result: medias, pending: fetchingMedias, error: fetchMediasError});
+    } else if (fetchingMedias) {
+      // pending
+      setMediasPayload({pending: fetchingMedias});
+    }
+  }, [medias, fetchingMedias, fetchMediasError]);
+
+  const searchMedias = async (key: string) => {
+    fetchMediasAction(key);
+  };
 
   return (
     <div className={styles.banner}>
@@ -21,7 +40,7 @@ const Banner = () => {
           <Input.Search
             placeholder="Search ralated medias..."
             size="large"
-            onSearch={value => console.log(value)}
+            onSearch={searchMedias}
             className={styles.search}
           />
           <div className={styles.shortCuts}>
@@ -29,7 +48,7 @@ const Banner = () => {
             <div className={styles.tags}>
               {
                 ['animal', 'car', 'beauty', 'self', 'travel'].map((tag: string) => (
-                <span key={tag}>#{tag}</span>
+                <span key={tag} onClick={() => searchMedias(tag)}>#{tag}</span>
                 ))
               }
             </div>

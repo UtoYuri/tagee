@@ -15,7 +15,7 @@ const WaterfallsFlow = function(props: Props) {
   return (
     <div className={styles.waterfalls} style={{ columnCount: columns || 5, columnGap: `${gutter || 10}px` }}>
       {
-        children.map((element: JSX.Element, index: number) => (
+        children && children.map((element: JSX.Element, index: number) => (
           <div className={styles.item} key={`item-${index}`}>{element}</div>
         ))
       }
