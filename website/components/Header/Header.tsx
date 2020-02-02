@@ -5,40 +5,22 @@ import classnames from 'classnames';
 
 import styles from './Header.less';
 import Banner from './Banner/Banner';
+import useScroll from '../../hooks/useScroll';
 import logo from '../../static/images/logo.png';
 
 const Header = function () {
-  const [scrollHeight, setScrollHeight] = React.useState<number>(0)
-  const [bannerHeight, setBannerHeight] = React.useState<number>(300)
+  const scrollPorint = useScroll();
+  const bannerRef: any = React.useRef();
+  const [bannerHeight, setBannerHeight] = React.useState<number>(0);
 
   React.useLayoutEffect(() => {
-    const handleScroll = () => {
-      let scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
-      if(document.body){
-        bodyScrollTop = document.body.scrollTop;
-      }
-      if(document.documentElement){
-        documentScrollTop = document.documentElement.scrollTop;
-      }
-      scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-  
-      setScrollHeight(scrollTop)
-    };
-
-    const banner = document.getElementById('header')
-    if (banner) {
-      setBannerHeight(banner.offsetHeight - 64);
-    }
-
-    window.addEventListener('scroll', handleScroll)
-
-    return () => window.removeEventListener('scroll', handleScroll)
+    setBannerHeight(bannerRef && bannerRef.current ? bannerRef.current.offsetHeight - 72 : 0);
   }, []);
 
-  const floatMode = scrollHeight > bannerHeight;
+  const floatMode = scrollPorint.y > bannerHeight;
 
   return (
-    <header className={styles.header} id='header'>
+    <header className={styles.header}>
       <nav className={classnames(styles.nav, floatMode && styles.outline)}>
         <div className={styles.left}>
           <Link href='/'>
@@ -46,10 +28,10 @@ const Header = function () {
           </Link>
         </div>
         <div className={styles.right}>
-          <a target='_blank' href='https://github.com/UtoYuri/tagee'><Button icon="github" type='primary'>Github</Button></a>
+          <a target='_blank' href='https://github.com/UtoYuri/tagee'><Button icon="github" type='primary' size="large">Github</Button></a>
         </div>
       </nav>
-      <div className={styles.banner}>
+      <div ref={bannerRef}>
         <Banner />
       </div>
     </header>

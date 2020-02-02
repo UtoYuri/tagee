@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const useLocalStorage = <T>(key: string, initialValue: T, listen: boolean=false): [T, (value: T) => void] => {
+const useLocalStorage = <T>(key: string, initialValue: T): [T, (value: T) => void] => {
   const getValue = (key: string) => {
     try {
       const item = window.localStorage.getItem(key);
@@ -10,7 +10,7 @@ const useLocalStorage = <T>(key: string, initialValue: T, listen: boolean=false)
     }
   }
 
-  const [storedValue, setStoredValue] = React.useState(getValue(key));
+  const [storedValue, setStoredValue] = React.useState(initialValue);
 
   const setValue = (value: any, callback?: (error?: any) => any) => {
     try {
@@ -26,11 +26,9 @@ const useLocalStorage = <T>(key: string, initialValue: T, listen: boolean=false)
     }
   };
 
-  const latestValue = listen ? getValue(key) : storedValue;
-
-  React.useEffect(() => {
-    setStoredValue(latestValue);
-  }, [latestValue]);
+  React.useLayoutEffect(() => {
+    setStoredValue(getValue(key));
+  }, []);
 
   return [storedValue, setValue];
 }

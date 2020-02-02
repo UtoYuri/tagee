@@ -1,8 +1,94 @@
 .banner {
-  height: 45vh;
-  background-image: url('../../../static/images/banner.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  filter: blur(1px);
-  opacity: 0.8;
+  height: 40vh;
+  position: relative;
+
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & > .background {
+    background-image: url('../../../static/images/banner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(1px);
+    opacity: 0.8;
+  }
+
+  & .content {
+    width: 650px;
+
+    & > h3 {
+      font-size: 36px;
+      line-height: 36px;
+      color: #fff;
+    }
+
+    & > .search {
+      height: 56px;
+      border-radius: 6px;
+      font-size: 18px;
+  
+      & input {
+        padding: 6px 11px 6px 20px;
+        border-radius: 6px;
+        background-color: rgba(255,255,255,0.9);
+      }
+    }
+
+    & > .shortCuts {
+      display: flex;
+      color: #fff;
+      padding: 8px 4px;
+
+      & > .title {
+        font-weight: bolder;
+
+        &:after {
+          content: ':';
+          margin-right: 10px;
+        }
+      }
+
+      & > .tags {
+        span {
+          margin-right: 5px;
+          cursor: pointer;
+
+          &:hover {
+            color: #ccc;
+            transition: 0.3s all;
+          }
+        }
+      }
+    }
+  }
+
+  & > .viewOptions {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    font-size: 28px;
+    display: flex;
+
+    & .option {
+      margin-left: 5px;
+      padding: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+        transition: 0.3s all;
+      }
+    }
+  }
 }

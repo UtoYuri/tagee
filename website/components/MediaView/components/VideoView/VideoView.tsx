@@ -5,7 +5,7 @@ import { Card } from 'antd';
 
 import styles from './VideoView.less';
 import useWindowSize from '../../../../hooks/useWindowSize';
-import useLocalStorage from '../../../../hooks/useLocalStorage';
+import useGlobalSetting from '../../../../hooks/useGlobalSetting';
 import useHover from '../../../../hooks/useHover';
 
 interface Props {
@@ -16,22 +16,26 @@ interface Props {
 const VideoView = function(props: Props) {
   const { media } = props;
   const windowSize = useWindowSize();
-  const [columns] = useLocalStorage<number>('view-columns', 5, true);
+  const [columns] = useGlobalSetting('view-columns', 5);
   const [isHovered, hoverRef] = useHover(false);
   const [viewWidth, setViewWidth] = React.useState<number | null>(null);
   const [viewHeight, setViewHeight] = React.useState<number | null>(null);
   let viewHolder: any = React.useRef();
 
   React.useLayoutEffect(() => {
-    const refWidth = viewHolder.current && viewHolder.current.clientWidth;
-    const refHeight = refWidth && refWidth * 0.58;
-    setViewWidth(refWidth);
-    setViewHeight(refHeight);
+    _.defer(() => {
+      const refWidth = viewHolder.current && viewHolder.current.clientWidth;
+      const refHeight = refWidth && refWidth * 0.58;
+      setViewWidth(refWidth);
+      setViewHeight(refHeight);
+    });
   }, [windowSize, columns]);
+
 
   return (
     <div ref={viewHolder} className={styles.videoView} id={media.ID}>
       <Card
+        hoverable
         cover={(
           <div ref={hoverRef}>
             <ReactPlayer

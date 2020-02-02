@@ -1,9 +1,15 @@
 import App from 'next/app';
 
+import { GlobalSettingProvider } from '../stores/globalSettingStore';
+
 class CustomApp extends App<any, {}> {
   render() {
     const { Component, pageProps } = this.props;
-    return <Component {...pageProps} />;
+    return (
+      <GlobalSettingProvider>
+        <Component {...pageProps} />
+      </GlobalSettingProvider>
+    );
   }
 }
 
