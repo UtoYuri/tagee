@@ -20,6 +20,7 @@ type Media struct {
 	Suffix                 string
 	Size                   uint64
 	Url                    string `gorm:"size:1000;not null;"`
+	ThumbnailUrl           string `gorm:"size:1000;not null;"`
 	Description            string `gorm:"size:500;"`
 	LastModifiedAt         time.Time
 	OriginRelativePathname string
@@ -35,6 +36,7 @@ type MediaReadonly struct {
 	Suffix                 string `form:"suffix"`
 	Size                   uint64 `form:"size"`
 	Url                    string `form:"url"`
+	ThumbnailUrl           string `form:"thumbnail_url"`
 	Description            string `form:"description"`
 	LastModifiedAt         int64  `form:"last_modified_at"`
 	OriginRelativePathname string `form:"origin_relative_pathname"`
@@ -62,6 +64,17 @@ func GetMediaBulk() ([]*Media, error) {
 	result := database.DB.Where("status = ?", StatusNormal).Find(&medias)
 
 	return medias, result.Error
+}
+
+func IsMediaExist(md5 string) (bool, *Media) {
+	var media Media
+
+	result := database.DB.Where("md5 = ?", md5).First(&media)
+	if result.Error != nil {
+		return false, nil
+	}
+
+	return true, &media
 }
 
 func CreateMedia(media *Media) error {
@@ -98,6 +111,7 @@ func (media *Media) Plain() MediaReadonly {
 		Suffix:                 media.Suffix,
 		Size:                   media.Size,
 		Url:                    media.Url,
+		ThumbnailUrl:           media.ThumbnailUrl,
 		Description:            media.Description,
 		LastModifiedAt:         media.LastModifiedAt.Unix(),
 		OriginRelativePathname: media.OriginRelativePathname,
@@ -120,6 +134,7 @@ func PlainBulk(medias []*Media) []MediaReadonly {
 			Suffix:                 media.Suffix,
 			Size:                   media.Size,
 			Url:                    media.Url,
+			ThumbnailUrl:           media.ThumbnailUrl,
 			Description:            media.Description,
 			LastModifiedAt:         media.LastModifiedAt.Unix(),
 			OriginRelativePathname: media.OriginRelativePathname,

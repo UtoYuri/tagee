@@ -38,10 +38,7 @@ func (s *Server) Run() error {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// static serve
-	localResourceDir := os.Getenv("LOCAL_RESOURCE_DIR")
-	if localResourceDir != "" {
-		router.Static("/assets", localResourceDir)
-	}
+	router.Static("/bucket", "./bucket")
 
 	// APIs
 	mediaGroup := router.Group("/media")

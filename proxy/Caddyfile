@@ -1,0 +1,17 @@
+http://yuri.local {
+  log / stdout "{combined} {latency_ms}"
+  tls off
+  timeouts none
+  
+  proxy / http://127.0.0.1:3000
+  
+  proxy /api/ http://127.0.0.1:8000 {
+    without /api
+    transparent
+  }
+
+  proxy /bucket/ http://127.0.0.1:8000 {
+    #without /api
+    #transparent
+  }
+}

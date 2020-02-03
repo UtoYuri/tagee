@@ -263,6 +263,9 @@
                 "suffix": {
                     "type": "string"
                 },
+                "thumbnailUrl": {
+                    "type": "string"
+                },
                 "title": {
                     "type": "string"
                 },
@@ -309,6 +312,9 @@
                 "suffix": {
                     "type": "string"
                 },
+                "thumbnailUrl": {
+                    "type": "string"
+                },
                 "title": {
                     "type": "string"
                 },
@@ -342,6 +348,9 @@
                     "type": "integer"
                 },
                 "suffix": {
+                    "type": "string"
+                },
+                "thumbnailUrl": {
                     "type": "string"
                 },
                 "title": {
@@ -386,6 +395,9 @@
                     "type": "integer"
                 },
                 "suffix": {
+                    "type": "string"
+                },
+                "thumbnailUrl": {
                     "type": "string"
                 },
                 "title": {

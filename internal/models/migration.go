@@ -4,6 +4,6 @@ import (
 	"tagee/pkg/database"
 )
 
-func AutoMigrate() {
+func init() {
 	database.DB.AutoMigrate(&Media{})
 }

@@ -3,6 +3,7 @@ package database
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"tagee/pkg/config"
 )
 
 type Config struct {
@@ -12,12 +13,14 @@ type Config struct {
 
 var DB *gorm.DB
 
-func Init(config *Config) error {
-	db, err := gorm.Open(config.Dialect, config.Url)
+func init() {
+	dbDialect := config.Get("DB_DIALECT", "sqlite3")
+	dbUrl := config.Get("DB_URL", "./database.sqlite")
+
+	db, err := gorm.Open(dbDialect, dbUrl)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	DB = db
-	return nil
 }

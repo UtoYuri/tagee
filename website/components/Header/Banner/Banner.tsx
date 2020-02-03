@@ -57,7 +57,7 @@ const Banner = () => {
       </div>
       <div className={styles.viewOptions}>
         <Popover content={columnSilder} placement="leftTop" title="Columns" trigger="click">
-          <Icon type="layout" theme="twoTone" className={styles.option} />
+          <Icon type="tool" theme="filled" className={styles.option} />
         </Popover>
       </div>
     </div>

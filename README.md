@@ -10,6 +10,15 @@ A excellent web project for tagging, browsing, locating your media files.
 ```bash
 ./scripts/serve_ui.sh
 ```
+### Run proxy service
+```bash
+./scripts/serve_proxy.sh
+```
+### Index media files
+```bash
+# upsert
+./scripts/index_bucket.sh
 
-### Index files
-If you wanna serve files locally. Specific environment variable `LOCAL_RESOURCE_DIR` as root and run `./scripts/rebuild_db.sh` to index files.
+# recreate
+./scripts/index_bucket.sh -f
+```

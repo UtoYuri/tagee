@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	_ "tagee/docs"
 	"tagee/pkg/config"
 	"tagee/web"
-	"os"
-	"strconv"
 )
 
 // @title Gin swagger
@@ -20,13 +19,8 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
-	if err := config.Init(); err != nil {
-		fmt.Println("Init failed,", err)
-		return
-	}
-
 	var port int64
-	port, err := strconv.ParseInt(os.Getenv("PORT"), 10, 64)
+	port, err := strconv.ParseInt(config.Get("PORT", "80"), 10, 64)
 	if err != nil {
 		port = 8000
 	}

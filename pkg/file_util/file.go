@@ -7,19 +7,17 @@ import (
 )
 
 const (
-	FileOther = 0
-	FileImage = 1
-	FileVoice = 2
-	FileVideo = 3
-	FileText  = 4
+	FileUnknown = 0
+	FileImage   = 1
+	FileVoice   = 2
+	FileVideo   = 3
 )
 
 var kindMap = func() map[string]int {
 	originKind := map[int][]string{
 		FileImage: {"jpg", "jpeg", "png", "ico", "svg"},
 		FileVoice: {"mp3"},
-		FileVideo: {"mp4", "rmvb", "avi", "flv"},
-		FileText:  {"txt", "conf", "log"},
+		FileVideo: {"mp4"},
 	}
 
 	kind := make(map[string]int)
@@ -48,7 +46,7 @@ func ParseFileKind(suffix string) int {
 	if kind, ok := kindMap[strings.ToLower(suffix)]; ok {
 		return kind
 	}
-	return FileOther
+	return FileUnknown
 }
 
 func ParseFileFormat(fileName string) (int, string) {

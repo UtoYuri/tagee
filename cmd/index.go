@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 	"tagee/internal/models"
-	"tagee/pkg/config"
 	"tagee/pkg/file_util"
 )
 
@@ -28,18 +27,23 @@ func traversalFolder(folder string) (Files, error) {
 	return files, err
 }
 
-func createMedia(fileInfo os.FileInfo, pathname string) error {
+func buildMedia(fileInfo os.FileInfo, pathname string) (*models.Media, error) {
 	kind, suffix := file_util.ParseFileFormat(fileInfo.Name())
+
+	if kind == file_util.FileUnknown {
+		return nil, fmt.Errorf("Ignore unknown media<%s>\n", pathname)
+	}
+
 	file, err := os.Open(pathname)
 	if err != nil {
-		return fmt.Errorf("Create media<%s> failed while opening file, error is %v\n", pathname, err)
+		return nil, fmt.Errorf("Create media<%s> failed while opening file, error is %v\n", pathname, err)
 	}
 
 	defer file.Close()
 
 	md5, err := file_util.FileSum(file)
 	if err != nil {
-		return fmt.Errorf("Create media<%s> failed while calcuating sum, error is %v\n", pathname, err)
+		return nil, fmt.Errorf("Create media<%s> failed while calcuating sum, error is %v\n", pathname, err)
 	}
 
 	absPathname, err := file_util.GetAbsPathname(file)
@@ -49,46 +53,57 @@ func createMedia(fileInfo os.FileInfo, pathname string) error {
 		Kind:                   kind,
 		Suffix:                 suffix,
 		Size:                   uint64(fileInfo.Size()),
-		Url:                    absPathname, // TODO: change to the path which relative to LOCAL_RESOURCE_DIR
+		Url:                    pathname,
+		ThumbnailUrl:           pathname,
 		LastModifiedAt:         fileInfo.ModTime(),
 		OriginRelativePathname: absPathname,
 		CustomRelativePathname: absPathname,
 		MD5:                    md5,
 	}
 
-	err = models.CreateMedia(media)
-	if err != nil {
-		return fmt.Errorf("Create media<%s> failed while insert db, error is %v\n", pathname, err)
-	}
-
-	return nil
+	return media, nil
 }
 
 func main() {
-	if err := config.Init(); err != nil {
-		fmt.Println("Init failed,", err)
-		return
-	}
-
-	localResourceDir := os.Getenv("LOCAL_RESOURCE_DIR")
-	if localResourceDir == "" {
-		fmt.Println("LOCAL_RESOURCE_DIR not provided")
-		return
-	}
-
-	files, err := traversalFolder(localResourceDir)
+	files, err := traversalFolder("./bucket")
 	if err != nil {
 		fmt.Println("Index failed,", err)
 		return
 	}
 
 	for pathname := range files {
-		err := createMedia(files[pathname], pathname)
-
+		media, err := buildMedia(files[pathname], pathname)
 		if err != nil {
-			fmt.Println(err.Error())
+			fmt.Print(err)
+			continue
+		}
+
+		isExist, existMedia := models.IsMediaExist(media.MD5)
+
+		if isExist {
+			existMedia.Kind = media.Kind
+			existMedia.Suffix = media.Suffix
+			existMedia.Url = media.Url
+			existMedia.ThumbnailUrl = media.ThumbnailUrl
+			existMedia.OriginRelativePathname = media.OriginRelativePathname
+			existMedia.CustomRelativePathname = media.CustomRelativePathname
+
+			err = existMedia.Update()
+
+			if err != nil {
+				fmt.Printf("Update media<%s> failed while insert db, error is %v\n", pathname, err)
+				continue
+			}
+
+			fmt.Printf("[UPDATE] Index media success, <%s>\n", pathname)
 		} else {
-			fmt.Printf("Index media success, <%s>\n", pathname)
+			err = models.CreateMedia(media)
+			if err != nil {
+				fmt.Printf("Create media<%s> failed while insert db, error is %v\n", pathname, err)
+				continue
+			}
+
+			fmt.Printf("[CREATE] Index media success, <%s>\n", pathname)
 		}
 	}
 }

@@ -22,6 +22,7 @@ type CreateParams struct {
 	Suffix                 string `form:"suffix"`
 	Size                   uint64 `form:"size"`
 	Url                    string `form:"url" binding:"required"`
+	ThumbnailUrl           string `form:"thumbnail_url"`
 	Description            string `form:"description"`
 	LastModifiedAt         int64  `form:"last_modified_at"`
 	OriginRelativePathname string `form:"origin_relative_pathname"`
@@ -35,6 +36,7 @@ type UpdateParams struct {
 	Suffix                 string `form:"suffix"`
 	Size                   uint64 `form:"size"`
 	Url                    string `form:"url"`
+	ThumbnailUrl           string `form:"thumbnail_url"`
 	Description            string `form:"description"`
 	LastModifiedAt         int64  `form:"last_modified_at"`
 	OriginRelativePathname string `form:"origin_relative_pathname"`
@@ -48,6 +50,7 @@ type PatchParams struct {
 	Suffix                 string `form:"suffix"`
 	Size                   uint64 `form:"size"`
 	Url                    string `form:"url"`
+	ThumbnailUrl           string `form:"thumbnail_url"`
 	Description            string `form:"description"`
 	LastModifiedAt         int64  `form:"last_modified_at"`
 	OriginRelativePathname string `form:"origin_relative_pathname"`
@@ -150,7 +153,8 @@ func CreateMedia(c *gin.Context) {
 		Suffix:                 params.Suffix,
 		Size:                   params.Size,
 		Url:                    params.Url,
-		Description:            params.Url,
+		ThumbnailUrl:           utils.ValidOrDefault(params.ThumbnailUrl, params.Url).(string),
+		Description:            params.Description,
 		LastModifiedAt:         time.Unix(utils.ValidOrDefault(params.LastModifiedAt, time.Now().Unix()).(int64), 0),
 		OriginRelativePathname: params.OriginRelativePathname,
 		CustomRelativePathname: params.CustomRelativePathname,
@@ -218,6 +222,7 @@ func PatchMedia(c *gin.Context) {
 	media.Suffix = utils.ValidOrDefault(patchParams.Suffix, media.Suffix).(string)
 	media.Size = utils.ValidOrDefault(patchParams.Size, media.Size).(uint64)
 	media.Url = utils.ValidOrDefault(patchParams.Url, media.Url).(string)
+	media.ThumbnailUrl = utils.ValidOrDefault(patchParams.ThumbnailUrl, media.ThumbnailUrl).(string)
 	media.Description = utils.ValidOrDefault(patchParams.Description, media.Description).(string)
 	media.LastModifiedAt = time.Unix(utils.ValidOrDefault(patchParams.LastModifiedAt, media.LastModifiedAt.Unix()).(int64), 0)
 	media.OriginRelativePathname = utils.ValidOrDefault(patchParams.OriginRelativePathname, media.OriginRelativePathname).(string)
@@ -283,6 +288,7 @@ func UpdateMedia(c *gin.Context) {
 	media.Suffix = updateParams.Suffix
 	media.Size = updateParams.Size
 	media.Url = updateParams.Url
+	media.ThumbnailUrl = utils.ValidOrDefault(updateParams.ThumbnailUrl, updateParams.Url).(string)
 	media.Description = updateParams.Description
 	media.LastModifiedAt = time.Unix(utils.ValidOrDefault(updateParams.LastModifiedAt, time.Now().Unix()).(int64), 0)
 	media.OriginRelativePathname = updateParams.OriginRelativePathname
